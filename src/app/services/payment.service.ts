@@ -16,10 +16,9 @@ export class PaymentService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getPayment(payment: Payment): Observable<any> {
-    let url = './assets/payment.json';
-    //return this.httpClient.post<any>(url, JSON.stringify(payment), httpOption);  asa ar fi call de post 
-    return this.httpClient.get<any>(url);
+  postPayment(payment: Payment): Observable<any> {
+    let url = 'http://localhost:3000/test-post';
+    return this.httpClient.post<any>(url, payment, httpOption);
   }
 
 }

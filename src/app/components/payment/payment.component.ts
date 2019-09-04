@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, ContentChild } from '@angular/core';
 import { PaymentService } from 'src/app/services/payment.service';
 import { Payment } from 'src/app/models/paymentDTO';
-import { Observable } from 'rxjs';
-import { O_NOFOLLOW } from 'constants';
+
+
 
 declare var $: any;
 
@@ -16,26 +16,32 @@ export class PaymentComponent implements OnInit, OnDestroy {
   myPayment: Payment;
   callPayment: any;
 
-  @ViewChild('dateTime', { static: true }) datetime: ElementRef;
+  @ViewChild('expirationDate', { static: false }) expirationDate: ElementRef;
 
   constructor(private paymentService: PaymentService, ) {
     this.myPayment = new Payment();
   }
 
   ngOnInit() {
+    console.log(this.expirationDate);
     $(
       function () {
-        $("#dateTime").datepicker({ dateFormat: "dd-mm-yy",minDate:new Date()});
+        $("#expirationDate").datepicker({ dateFormat: "dd-mm-yy",
+          minDate:new Date(),
+        });
       }
     );
 
   }
 
   Payment() {
-    this.callPayment = this.paymentService.getPayment(this.myPayment).subscribe(
+    this.myPayment.expirationDate = $("#expirationDate").datepicker("getDate");
+    this.callPayment = this.paymentService.postPayment(this.myPayment).subscribe(
       data => {
-        if (data.status === 'success') {
-          console.log(data.response.message);
+        if (data.success) {
+          console.log(data.values);
+        }else{
+          console.log(data.message);
         }
       }
     )

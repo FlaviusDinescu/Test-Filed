@@ -1,46 +1,63 @@
-<div class="card m-1" style="background-color: beige">
-    <div class="card-body">
-        <form (ngSubmit)="Payment()" novalidate>
-            <h5 class="card-title">Payment details</h5>
-            <div class="form-group row">
-                <label for="creditCardNumber" class="col-sm-2 col-form-label">Card number:</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" [ngModel]="myPayment.creditCardNumber"
-                        [ngModelOptions]="{standalone: true}" required>
+<div class="card m-1" style="background-color: beige;width:20rem">
+    <h5 class="card-header">Payment details</h5>
+    <div class="card-body" style="font-size: 0.9rem">
+        <form name="form" (ngSubmit)="f.form.valid && Payment()" #f="ngForm" novalidate>
+            <div class="form-group col">
+                <label>Card number:</label>
+                <div>
+                    <input type="text" name="creditCardNumber" class="form-control"
+                        [(ngModel)]="myPayment.creditCardNumber" #creditCardNumber="ngModel"
+                        [ngClass]="{ 'is-invalid': f.submitted && creditCardNumber.invalid }" required>
+                </div>
+                <div *ngIf="f.submitted && creditCardNumber.invalid" class="text-danger">
+                    <div *ngIf="creditCardNumber.errors.required"><small>Card number is required</small></div>
                 </div>
             </div>
-            <div class="form-group row">
-                <label for="cardholder" class="col-sm-2 col-form-label">Card holder:</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" [ngModel]="myPayment.cardholder"
-                        [ngModelOptions]="{standalone: true}" required>
+            <div class="form-group col">
+                <label>Card holder:</label>
+                <div>
+                    <input type="text" name="cardHolder" class="form-control" [(ngModel)]="myPayment.cardHolder"
+                        #cardHolder="ngModel" [ngClass]="{ 'is-invalid': f.submitted && cardHolder.invalid }" required>
+                </div>
+                <div *ngIf="f.submitted && cardHolder.invalid" class="text-danger">
+                    <div *ngIf="cardHolder.errors.required"><small>Card holder is required</small></div>
                 </div>
             </div>
-            <div class="form-group row">
-                <label for="creditCardNumber" class="col-sm-2 col-form-label">Expiration date:</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" [ngModel]="myPayment.expirationDate" id="dateTime" #datetime
-                        [ngModelOptions]="{standalone: true}" required>
+            <div class="form-group col">
+                <label>Expiration date:</label>
+                <div>
+                    <input type="text" class="form-control" id="expirationDate" [(ngModel)]="myPayment.expirationDate"
+                        name="expirationDate" #expirationDate="ngModel"
+                        [ngClass]="{ 'is-invalid': f.submitted && expirationDate.invalid }">
+                </div>
+                <div *ngIf="f.submitted && expirationDate.invalid" class="text-danger">
+                    <div *ngIf="expirationDate.errors.required"><small>Expiration date is required</small></div>
                 </div>
             </div>
-            <div class="form-group row">
-                <label for="creditCardNumber" class="col-sm-2 col-form-label">Security code:</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" [ngModel]="myPayment.securityCode"
-                        [ngModelOptions]="{standalone: true}" required>
+            <div class="form-group col">
+                <label>Security code:</label>
+                <div>
+                    <input type="text" class="form-control" name="securityCode" [(ngModel)]="myPayment.securityCode"
+                        #securityCode="ngModel" [ngClass]="{ 'is-invalid': f.submitted && securityCode.invalid }" minlength="3" maxlength="3">
+                </div>
+                <div *ngIf="f.submitted && securityCode.invalid" class="text-danger">
+                    <div *ngIf="securityCode.errors.minlength"><small>Must have  3 character</small></div>
                 </div>
             </div>
-            <div class="form-group row">
-                <label for="creditCardNumber" class="col-sm-2 col-form-label">Amount:</label>
-                <div class="col-sm-10">
-                    <input type="number" class="form-control" [ngModel]="myPayment.amount"
-                        [ngModelOptions]="{standalone: true}" required>
+            <div class="form-group col">
+                <label>Amount:</label>
+                <div>
+                    <input name="amount" class="form-control" [(ngModel)]="myPayment.amount" #amount="ngModel"
+                        [ngClass]="{ 'is-invalid': f.submitted && amount.invalid }" required pattern="^[+]?\d+([.]\d+)?$">
+                </div>
+                <div *ngIf="f.submitted && amount.invalid" class="text-danger">
+                    <div *ngIf="amount.errors.required"><small>Amount is required</small></div>
+                    <div *ngIf="amount.errors.pattern"><small>Amount must be a pozitive number</small></div>
                 </div>
             </div>
-            <p>
-                <button type="submit" class="btn btn-primary"> <i
-                        class="fab fa-cc-visa"></i></button>
-            </p>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary"> <i class="fab fa-cc-visa"></i></button>
+            </div>
         </form>
     </div>
 </div>
