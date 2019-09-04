@@ -1,5 +1,7 @@
 # TestFiled
 
+Before run this project must clone the BackEnd and run it to work the call for post
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.0.4.
 
 ## Development server
